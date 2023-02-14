@@ -16,7 +16,7 @@ use Drupal\Tests\test_support\Traits\Installs\InstallsModules;
 use Drupal\Tests\test_support\Traits\Support\InteractsWithEntities;
 
 /**
- * Useful test traits for Islandora.Creates Islanodra node, media and files.
+ * Useful test traits for Islandora. Creates Islanodra node, media and files.
  */
 trait IslandoraContentTypeTestTraits {
   use EntityReferenceTestTrait;
