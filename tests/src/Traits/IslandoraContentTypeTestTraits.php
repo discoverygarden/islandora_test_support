@@ -61,7 +61,7 @@ trait IslandoraContentTypeTestTraits {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createNode() : NodeInterface {
-    if (empty($this->mediaType) || empty($this->contentType)) {
+    if (empty($this->contentType)) {
       $this->prepareIslandoraContentType();
     }
     /** @var \Drupal\node\NodeInterface $entity */
@@ -81,9 +81,6 @@ trait IslandoraContentTypeTestTraits {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createFile() : FileInterface {
-    if (empty($this->mediaType) || empty($this->contentType)) {
-      $this->prepareIslandoraContentType();
-    }
     /** @var \Drupal\file\FileInterface $entity */
     $entity = $this->createEntity('file', [
       'uri' => $this->createUri(),
