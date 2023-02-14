@@ -11,15 +11,6 @@ use Drupal\Core\Database\Query\SelectInterface;
 trait DatabaseQueryTestTraits {
 
   /**
-   * Access tags by entity type.
-   */
-  protected static array $accessTags = [
-    'node' => 'node_access',
-    'file' => 'file_access',
-    'media' => 'media_access',
-  ];
-
-  /**
    * Default operation.
    */
   protected static string $viewOp = 'view';
@@ -113,7 +104,7 @@ trait DatabaseQueryTestTraits {
    */
   protected function addOperation($query, $operation = NULL) {
     $operation ? $query->addMetaData('op',
-      $operation) : $query->addMetaData('op', self::$viewOp);
+      $operation) : $query->addMetaData('op', static::$viewOp);
   }
 
 }

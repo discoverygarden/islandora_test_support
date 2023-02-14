@@ -14,7 +14,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
   /**
    * Modules to be installed during setup.
    */
-  protected static array $modulesToInstall = [
+  private static array $modulesToInstall = [
     'user',
     'node',
     'media',
@@ -28,7 +28,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
   /**
    * Entity types to be installed for test setup.
    */
-  protected static array $entityTypes = [
+  private static array $entityTypes = [
     'node',
     'media',
     'file',
@@ -38,11 +38,14 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
 
   /**
    * Schemas to be installed for test setup.
+   *
+   * Modules and the schemas from those modules
+   * that should be installed.
    */
-  protected static array $schemasToInstall = [
-    'node' => 'node_access',
-    'file' => 'file_usage',
-    'user' => 'users_data',
+  private static array $schemasToInstall = [
+    'node' => ['node_access'],
+    'file' => ['file_usage'],
+    'user' => ['users_data'],
   ];
 
   /**
@@ -55,8 +58,9 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
    */
   public function setUp(): void {
     parent::setUp();
+
     // Install required modules with dependencies.
-    $this->installModulesWithDependencies(self::$modulesToInstall);
+    $this->installModulesWithDependencies(static::$modulesToInstall);
 
     $this->installConfig([
       'node',
@@ -64,12 +68,12 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
     ]);
 
     // Install schemas for node, file and user.
-    foreach (self::$schemasToInstall as $module => $schema) {
+    foreach (static::$schemasToInstall as $module => $schema) {
       $this->installSchema($module, $schema);
     }
 
     // Install entity schemas for node, file and media.
-    foreach (self::$entityTypes as $entityType) {
+    foreach (static::$entityTypes as $entityType) {
       $this->installEntitySchema($entityType);
     }
 

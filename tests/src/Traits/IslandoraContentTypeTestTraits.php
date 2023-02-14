@@ -97,7 +97,7 @@ trait IslandoraContentTypeTestTraits {
    */
   protected function createUri() {
     $filepath = 'test file ' . $this->randomMachineName();
-    $scheme = 'protected';
+    $scheme = 'public';
     $filepath = $scheme . '://' . $filepath;
     $contents = "file_put_contents() doesn't seem to appreciate empty strings so let's put in some data.";
 
