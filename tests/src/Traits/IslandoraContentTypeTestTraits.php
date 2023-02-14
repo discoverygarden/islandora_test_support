@@ -72,13 +72,32 @@ trait IslandoraContentTypeTestTraits {
    *
    * @return \Drupal\file\FileInterface
    *   A created (and saved) file entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createFile() : FileInterface {
     /** @var \Drupal\file\FileInterface $entity */
     $entity = $this->createEntity('file', [
-      'uri' => 'info:data/' . $this->randomMachineName(),
+      'uri' => $this->createUri(),
     ]);
     return $entity;
+  }
+
+  /**
+   * Creates a file and returns its URI.
+   *
+   * @return string
+   *   File URI.
+   */
+  public function createUri() {
+    $filepath = 'test file ' . $this->randomMachineName();
+    $scheme = 'public';
+    $filepath = $scheme . '://' . $filepath;
+    $contents = "file_put_contents() doesn't seem to appreciate empty strings so let's put in some data.";
+
+    file_put_contents($filepath, $contents);
+    $this->assertFileExists($filepath);
+    return $filepath;
   }
 
   /**
@@ -100,6 +119,7 @@ trait IslandoraContentTypeTestTraits {
       IslandoraUtils::MEDIA_OF_FIELD => $node,
       $this->getMediaFieldName() => $file,
     ]);
+    $entity->save();
     return $entity;
   }
 

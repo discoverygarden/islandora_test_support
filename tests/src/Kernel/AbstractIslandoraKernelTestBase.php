@@ -33,6 +33,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
     'media',
     'file',
     'user',
+    'media_type',
   ];
 
   /**
