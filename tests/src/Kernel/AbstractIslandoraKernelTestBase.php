@@ -14,7 +14,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
   /**
    * Modules to be installed during setup.
    */
-  public static array $modulesToInstall = [
+  protected static array $modulesToInstall = [
     'user',
     'node',
     'media',
@@ -28,7 +28,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
   /**
    * Entity types to be installed for test setup.
    */
-  public static array $entityTypes = [
+  protected static array $entityTypes = [
     'node',
     'media',
     'file',
@@ -39,7 +39,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
   /**
    * Schemas to be installed for test setup.
    */
-  public static array $schemasToInstall = [
+  protected static array $schemasToInstall = [
     'node' => 'node_access',
     'file' => 'file_usage',
     'user' => 'users_data',
