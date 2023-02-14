@@ -44,10 +44,10 @@ trait IslandoraContentTypeTestTraits {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function prepareIslandoraContentType() : void {
+  protected function prepareIslandoraContentType() : void {
     // Create content required for creating islandora-esque data.
     $this->contentType = $this->createContentType(['type' => 'page']);
-    $this->mediaType =  $this->createMediaType('file', ['id' => 'file']);
+    $this->mediaType = $this->createMediaType('file', ['id' => 'file']);
     $this->createEntityReferenceField('media',
       $this->mediaType->id(), IslandoraUtils::MEDIA_OF_FIELD,
       "Media Of", $this->contentType->getEntityType()->getBundleOf());
@@ -58,6 +58,7 @@ trait IslandoraContentTypeTestTraits {
    *
    * @return \Drupal\node\NodeInterface
    *   A created (and saved) node entity.
+   *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createNode() : NodeInterface {
@@ -94,9 +95,9 @@ trait IslandoraContentTypeTestTraits {
    * @return string
    *   File URI.
    */
-  public function createUri() {
+  protected function createUri() {
     $filepath = 'test file ' . $this->randomMachineName();
-    $scheme = 'public';
+    $scheme = 'protected';
     $filepath = $scheme . '://' . $filepath;
     $contents = "file_put_contents() doesn't seem to appreciate empty strings so let's put in some data.";
 
@@ -116,6 +117,7 @@ trait IslandoraContentTypeTestTraits {
    *
    * @return \Drupal\media\MediaInterface
    *   A created (and saved) media entity.
+   *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createMedia(FileInterface $file, NodeInterface $node) : MediaInterface {

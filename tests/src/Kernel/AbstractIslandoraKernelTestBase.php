@@ -12,7 +12,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
   use IslandoraContentTypeTestTraits;
 
   /**
-   * {@inheritdoc}
+   * Modules to be installed during setup.
    */
   public static array $modulesToInstall = [
     'user',
@@ -26,7 +26,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
   ];
 
   /**
-   * {@inheritdoc}
+   * Entity types to be installed for test setup.
    */
   public static array $entityTypes = [
     'node',
@@ -37,7 +37,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
   ];
 
   /**
-   * {@inheritdoc}
+   * Schemas to be installed for test setup.
    */
   public static array $schemasToInstall = [
     'node' => 'node_access',
@@ -46,7 +46,10 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
   ];
 
   /**
-   * {@inheritDoc}
+   * Set up initial content requirements.
+   *
+   * Installs required config.
+   * Creates media of field, content type and media type.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */

@@ -25,24 +25,81 @@ trait DatabaseQueryTestTraits {
   protected static string $viewOp = 'view';
 
   /**
-   * Generates select access query.
+   * Generates base media query.
    */
-  public function generateSelectAccessQuery($type, $user, $operation = NULL): SelectInterface {
-    switch ($type) {
-      case 'media':
-        $query = $this->generateBaseMediaQuery();
-        break;
+  protected function generateBaseMediaQuery(): SelectInterface {
+    return Database::getConnection()->select('media', 'm')->fields('m');
+  }
 
-      case 'file':
-        $query = $this->generateBaseFileQuery();
-        break;
+  /**
+   * Generates base file query.
+   */
+  protected function generateBaseFileQuery(): SelectInterface {
+    return Database::getConnection()->select('file_managed', 'f')->fields('f');
+  }
 
-      case 'node':
-        $query = $this->generateBaseNodeQuery();
-      default:
-    }
+  /**
+   * Generates base node query.
+   */
+  protected function generateBaseNodeQuery(): SelectInterface {
+    return Database::getConnection()->select('node', 'n')->fields('n');
+  }
 
-    $this->addAccessTag($query, $type);
+  /**
+   * Adds the relevant access tag.
+   */
+  protected function addAccessTag($query, $tag) {
+    $query->addTag($tag);
+  }
+
+  /**
+   * Adds the correct user to the query.
+   */
+  protected function addUser($query, $user) {
+    $query->addMetaData('account', $user);
+  }
+
+  /**
+   * Generates Media select query tagged with media_access.
+   */
+  protected function generateMediaSelectAccessQuery($user, $operation = NULL): SelectInterface {
+    return $this->attachAccessControl(
+      $this->generateBaseMediaQuery(),
+      'media_access',
+      $user,
+      $operation
+    );
+  }
+
+  /**
+   * Generates file select query tagged with file_access.
+   */
+  protected function generateFileSelectAccessQuery($user, $operation = NULL): SelectInterface {
+    return $this->attachAccessControl(
+      $this->generateBaseFileQuery(),
+      'file_access',
+      $user,
+      $operation
+    );
+  }
+
+  /**
+   * Generates node select query tagged with node_access.
+   */
+  protected function generateNodeSelectAccessQuery($user, $operation = NULL): SelectInterface {
+    return $this->attachAccessControl(
+      $this->generateBaseNodeQuery(),
+      'node_access',
+      $user,
+      $operation
+    );
+  }
+
+  /**
+   * Adds the correct access tag, operation and user to query.
+   */
+  protected function attachAccessControl($query, $tag, $user, $operation) {
+    $this->addAccessTag($query, $tag);
     $this->addUser($query, $user);
     $this->addOperation($query, $operation);
 
@@ -50,44 +107,11 @@ trait DatabaseQueryTestTraits {
   }
 
   /**
-   * Generates base media query.
-   */
-  public function generateBaseMediaQuery(): SelectInterface {
-    return Database::getConnection()->select('media', 'm')->fields('m');
-  }
-
-  /**
-   * Generates base file query.
-   */
-  public function generateBaseFileQuery(): SelectInterface {
-    return Database::getConnection()->select('file_managed', 'f')->fields('f');
-  }
-
-  /**
-   * Generates base node query.
-   */
-  public function generateBaseNodeQuery(): SelectInterface {
-    return Database::getConnection()->select('node', 'n')->fields('n');
-  }
-
-  /**
-   * Adds the relevant access tag.
-   */
-  public function addAccessTag(&$query, $type) {
-    $query->addTag(self::$accessTags[$type]);
-  }
-
-  /**
-   * Adds the correct user to the query.
-   */
-  public function addUser(&$query, $user) {
-    $query->addMetaData('account', $user);
-  }
-
-  /**
    * Adds the relevant operation.
+   *
+   * View used by default.
    */
-  public function addOperation(&$query, $operation = NULL) {
+  protected function addOperation($query, $operation = NULL) {
     $operation ? $query->addMetaData('op',
       $operation) : $query->addMetaData('op', self::$viewOp);
   }
