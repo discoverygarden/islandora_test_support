@@ -9,6 +9,7 @@ Includes an abstract kernel test class that can be extended in tests and a conte
 - [x] Create a node.
 - [x] Create a file.
 - [x] Create a media which referenced an input node in media of field.
+- [x] Create access tagged db queries for node, media and files.
 - [ ] Create a member of field
 - [ ] Create node with member of field
 - [ ] Create original file
