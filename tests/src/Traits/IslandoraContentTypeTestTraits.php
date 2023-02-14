@@ -4,6 +4,7 @@ namespace Drupal\Tests\islandora_test_support\Traits;
 
 use Drupal\file\FileInterface;
 use Drupal\islandora\IslandoraUtils;
+use Drupal\media\Entity\Media;
 use Drupal\media\MediaInterface;
 use Drupal\media\MediaTypeInterface;
 use Drupal\node\NodeInterface;
@@ -46,7 +47,7 @@ trait IslandoraContentTypeTestTraits {
   public function prepareIslandoraContentType() : void {
     // Create content required for creating islandora-esque data.
     $this->contentType = $this->createContentType(['type' => 'page']);
-    $this->mediaType = $this->createMediaType('file');
+    $this->mediaType =  $this->createMediaType('file', ['id' => 'file']);
     $this->createEntityReferenceField('media',
       $this->mediaType->id(), IslandoraUtils::MEDIA_OF_FIELD,
       "Media Of", $this->contentType->getEntityType()->getBundleOf());
@@ -57,8 +58,12 @@ trait IslandoraContentTypeTestTraits {
    *
    * @return \Drupal\node\NodeInterface
    *   A created (and saved) node entity.
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createNode() : NodeInterface {
+    if (empty($this->mediaType) || empty($this->contentType)) {
+      $this->prepareIslandoraContentType();
+    }
     /** @var \Drupal\node\NodeInterface $entity */
     $entity = $this->createEntity('node', [
       'type' => $this->contentType->getEntityTypeId(),
@@ -76,6 +81,9 @@ trait IslandoraContentTypeTestTraits {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createFile() : FileInterface {
+    if (empty($this->mediaType) || empty($this->contentType)) {
+      $this->prepareIslandoraContentType();
+    }
     /** @var \Drupal\file\FileInterface $entity */
     $entity = $this->createEntity('file', [
       'uri' => $this->createUri(),
@@ -111,11 +119,16 @@ trait IslandoraContentTypeTestTraits {
    *
    * @return \Drupal\media\MediaInterface
    *   A created (and saved) media entity.
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createMedia(FileInterface $file, NodeInterface $node) : MediaInterface {
+    if (empty($this->mediaType) || empty($this->contentType)) {
+      $this->prepareIslandoraContentType();
+    }
     /** @var \Drupal\media\MediaInterface $entity */
-    $entity = $this->createEntity('media', [
+    $entity = Media::create([
       'bundle' => $this->mediaType->id(),
+      'name' => 'Test media',
       IslandoraUtils::MEDIA_OF_FIELD => $node,
       $this->getMediaFieldName() => $file,
     ]);
