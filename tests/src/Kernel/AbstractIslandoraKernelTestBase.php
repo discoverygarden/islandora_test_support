@@ -14,7 +14,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
   /**
    * Modules to be installed during setup.
    */
-  private static array $modulesToInstall = [
+  protected static array $modulesToInstall = [
     'user',
     'node',
     'media',

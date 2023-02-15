@@ -14,6 +14,7 @@ use Drupal\Tests\media\Traits\MediaTypeCreationTrait;
 use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
 use Drupal\Tests\test_support\Traits\Installs\InstallsModules;
 use Drupal\Tests\test_support\Traits\Support\InteractsWithEntities;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
  * Useful test traits for Islandora. Creates Islanodra node, media and files.
@@ -24,6 +25,7 @@ trait IslandoraContentTypeTestTraits {
   use MediaTypeCreationTrait;
   use InteractsWithEntities;
   use InstallsModules;
+  use UserCreationTrait;
 
   /**
    * Node type for node creation.
@@ -124,14 +126,16 @@ trait IslandoraContentTypeTestTraits {
     if (empty($this->mediaType) || empty($this->contentType)) {
       $this->prepareIslandoraContentType();
     }
+
     /** @var \Drupal\media\MediaInterface $entity */
     $entity = Media::create([
       'bundle' => $this->mediaType->id(),
-      'name' => 'Test media',
+      'name' => $this->randomString(6),
       IslandoraUtils::MEDIA_OF_FIELD => $node,
       $this->getMediaFieldName() => $file,
     ]);
-    $entity->save();
+
+    $entity->setPublished()->save();
     return $entity;
   }
 
