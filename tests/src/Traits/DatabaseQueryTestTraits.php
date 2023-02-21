@@ -34,7 +34,7 @@ trait DatabaseQueryTestTraits {
     SelectInterface $query,
     string $tag,
     AccountInterface $user,
-    string $operation
+    ?string $operation
   ): SelectInterface {
     $this->addAccessTag($query, $tag);
     $this->addUser($query, $user);
