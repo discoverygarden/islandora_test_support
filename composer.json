@@ -1,0 +1,7 @@
+{
+    "name": "discoverygarden/islandora_test_support",
+    "description": "Provides helper functions and classes for islandora testing.",
+    "homepage": "https://github.com/discoverygarden/islandora_test_support",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later"
+}
