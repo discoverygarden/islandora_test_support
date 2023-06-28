@@ -13,3 +13,15 @@ Includes an abstract kernel test class that can be extended in tests and a conte
 - [ ] Create a member of field
 - [ ] Create node with member of field
 - [ ] Create original file
+
+## Troubleshooting/Issues
+
+Having problems or solved a problem? Contact
+[discoverygarden](http://www.discoverygarden.ca/).
+
+## Maintainers/Sponsors
+
+* [discoverygarden](http://www.discoverygarden.ca/)
+
+## License
+[GPLv3](https://www.gnu.org/licenses/gpl-3.0.txt)
