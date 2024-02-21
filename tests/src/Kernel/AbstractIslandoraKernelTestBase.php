@@ -19,6 +19,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
     'node',
     'media',
     'file',
+    'taxonomy_term',
     'user',
     'media_type',
   ];
@@ -39,7 +40,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
    * Set up initial content requirements.
    *
    * Installs required config.
-   * Creates media of field, content type and media type.
+   * Creates media of field, member of field, content type and media type.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -51,16 +52,19 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
       'user',
       'node',
       'media',
+      'taxonomy',
       'field',
       'file',
       'image',
       'system',
       'text',
+      'link',
     ]);
 
     $this->installConfig([
       'node',
       'user',
+      'taxonomy',
     ]);
 
     // Install schemas for node, file and user.
