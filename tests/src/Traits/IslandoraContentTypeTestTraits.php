@@ -83,25 +83,22 @@ trait IslandoraContentTypeTestTraits {
     // Add external URI field to vocabularies.
     FieldStorageConfig::create([
       'field_name' => IslandoraUtils::EXTERNAL_URI_FIELD,
-      'entity_type' => $this->islandoraModelVocabulary,
+      'entity_type' => 'taxonomy_term',
       'type' => 'link',
     ])->save();
+
     FieldConfig::create([
-      'entity_type' => $this->islandoraModelVocabulary,
+      'entity_type' => 'taxonomy_term',
       'field_name' => IslandoraUtils::EXTERNAL_URI_FIELD,
-      'bundle' => $this->islandoraModelVocabulary,
+      'bundle' => $this->islandoraModelVocabulary->id(),
       'settings' => ['link_type' => LinkItemInterface::LINK_EXTERNAL],
     ])->save();
 
-    FieldStorageConfig::create([
-      'field_name' => IslandoraUtils::EXTERNAL_URI_FIELD,
-      'entity_type' => $this->islandoraMediaUseVocabulary,
-      'type' => 'link',
-    ])->save();
+
     FieldConfig::create([
-      'entity_type' => $this->islandoraMediaUseVocabulary,
+      'entity_type' => 'taxonomy_term',
       'field_name' => IslandoraUtils::EXTERNAL_URI_FIELD,
-      'bundle' => $this->islandoraMediaUseVocabulary,
+      'bundle' => $this->islandoraMediaUseVocabulary->id(),
       'settings' => ['link_type' => LinkItemInterface::LINK_EXTERNAL],
     ])->save();
 
@@ -114,7 +111,7 @@ trait IslandoraContentTypeTestTraits {
     $this->createEntityReferenceField('media',
       $this->mediaType->id(), IslandoraUtils::MEDIA_USAGE_FIELD,
       "Media Use", 'taxonomy_term', 'default',
-      ['target_bundles' => [$this->islandoraMediaUseVocabulary]]);
+      ['target_bundles' => [$this->islandoraMediaUseVocabulary->id()]]);
 
     // Create member_of field which targets node.
     $this->createEntityReferenceField('node',
@@ -124,7 +121,7 @@ trait IslandoraContentTypeTestTraits {
     // Create content type (islandora model) field.
     $this->createEntityReferenceField('node', $this->contentType->id(), IslandoraUtils::MODEL_FIELD, 'Islandora Model',
       'taxonomy_term', 'default',
-      ['target_bundles' => [$this->islandoraModelVocabulary]]);
+      ['target_bundles' => [$this->islandoraModelVocabulary->id()]]);
   }
 
   /**
