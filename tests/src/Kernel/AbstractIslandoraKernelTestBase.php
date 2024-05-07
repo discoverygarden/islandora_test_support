@@ -9,21 +9,8 @@ use Drupal\Tests\islandora_test_support\Traits\IslandoraContentTypeTestTraits;
  * Abstract class for creating islandora objects.
  */
 abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
-  use IslandoraContentTypeTestTraits;
 
-  /**
-   * Modules to be installed during setup.
-   */
-  protected static array $modulesToInstall = [
-    'user',
-    'node',
-    'media',
-    'field',
-    'file',
-    'image',
-    'system',
-    'text',
-  ];
+  use IslandoraContentTypeTestTraits;
 
   /**
    * Entity types to be installed for test setup.
@@ -60,7 +47,16 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
     parent::setUp();
 
     // Install required modules with dependencies.
-    $this->installModulesWithDependencies(static::$modulesToInstall);
+    $this->enableModuleWithDependencies([
+      'user',
+      'node',
+      'media',
+      'field',
+      'file',
+      'image',
+      'system',
+      'text',
+    ]);
 
     $this->installConfig([
       'node',

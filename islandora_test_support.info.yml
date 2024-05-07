@@ -1,7 +1,7 @@
 name: Islandora test support
 description: 'Provides helper functions and classes for islandora testing.'
 type: module
-core_version_requirement: ^9
+core_version_requirement: ^9 || ^10
 hidden: true
 dependencies:
   - test_support:test_support
