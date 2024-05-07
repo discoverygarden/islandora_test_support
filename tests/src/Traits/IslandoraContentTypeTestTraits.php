@@ -69,7 +69,7 @@ trait IslandoraContentTypeTestTraits {
     }
     /** @var \Drupal\node\NodeInterface $entity */
     $entity = $this->createEntity('node', [
-      'type' => $this->contentType->getEntityTypeId(),
+      'type' => $this->contentType->id(),
       'title' => $this->randomString(),
     ]);
     return $entity;
