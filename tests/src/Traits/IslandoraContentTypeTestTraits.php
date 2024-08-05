@@ -9,7 +9,7 @@ use Drupal\media\MediaInterface;
 use Drupal\media\MediaTypeInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeTypeInterface;
-use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
+use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
 use Drupal\Tests\media\Traits\MediaTypeCreationTrait;
 use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
 use Drupal\Tests\test_support\Traits\Installs\InstallsModules;
@@ -20,7 +20,7 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
  * Useful test traits for Islandora. Creates Islanodra node, media and files.
  */
 trait IslandoraContentTypeTestTraits {
-  use EntityReferenceTestTrait;
+  use EntityReferenceFieldCreationTrait;
   use ContentTypeCreationTrait;
   use MediaTypeCreationTrait;
   use InteractsWithEntities;
