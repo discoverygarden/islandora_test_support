@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\islandora_test_support\Traits;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\FileInterface;
