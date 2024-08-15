@@ -10,6 +10,8 @@ Includes an abstract kernel test class that can be extended in tests and a conte
 - [x] Create a file.
 - [x] Create a media which references an input node in media of field.
 - [x] Create access tagged db queries for node, media and files.
+- [x] Create an Islandora models taxonomy.
+- [x] Create a field on Islandora content type that references the Islandora models taxonomy.
 - [ ] Create a member of field
 - [ ] Create node with member of field
 - [ ] Create original file

@@ -20,6 +20,7 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
     'media',
     'file',
     'user',
+    'taxonomy_term',
     'media_type',
   ];
 
@@ -56,11 +57,14 @@ abstract class AbstractIslandoraKernelTestBase extends KernelTestBase {
       'image',
       'system',
       'text',
+      'taxonomy',
+      'link',
     ]);
 
     $this->installConfig([
       'node',
       'user',
+      'taxonomy',
     ]);
 
     // Install schemas for node, file and user.

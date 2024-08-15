@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\islandora_test_support\Traits;
 
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\FileInterface;
 use Drupal\islandora\IslandoraUtils;
 use Drupal\media\Entity\Media;
@@ -9,15 +11,18 @@ use Drupal\media\MediaInterface;
 use Drupal\media\MediaTypeInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeTypeInterface;
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\taxonomy\VocabularyInterface;
 use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
 use Drupal\Tests\media\Traits\MediaTypeCreationTrait;
 use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
+use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 use Drupal\Tests\test_support\Traits\Installs\InstallsModules;
 use Drupal\Tests\test_support\Traits\Support\InteractsWithEntities;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
- * Useful test traits for Islandora. Creates Islanodra node, media and files.
+ * Useful test traits for Islandora. Creates Islandora node, media and files.
  */
 trait IslandoraContentTypeTestTraits {
   use EntityReferenceFieldCreationTrait;
@@ -26,11 +31,12 @@ trait IslandoraContentTypeTestTraits {
   use InteractsWithEntities;
   use InstallsModules;
   use UserCreationTrait;
+  use TaxonomyTestTrait;
 
   /**
    * Node type for node creation.
    *
-   * @var \Drupal\node\NodeTypeInterface|\Drupal\node\Entity\NodeType
+   * @var \Drupal\node\NodeTypeInterface
    */
   protected NodeTypeInterface $contentType;
 
@@ -42,9 +48,14 @@ trait IslandoraContentTypeTestTraits {
   protected MediaTypeInterface $mediaType;
 
   /**
-   * {@inheritDoc}
+   * Vocabulary for islandora models.
    *
-   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @var \Drupal\taxonomy\VocabularyInterface
+   */
+  protected VocabularyInterface $modelsVocabulary;
+
+  /**
+   * Creates a node type, media type, and vocabulary for Islandora.
    */
   protected function prepareIslandoraContentType() : void {
     // Create content required for creating islandora-esque data.
@@ -53,6 +64,19 @@ trait IslandoraContentTypeTestTraits {
     $this->createEntityReferenceField('media',
       $this->mediaType->id(), IslandoraUtils::MEDIA_OF_FIELD,
       "Media Of", $this->contentType->getEntityType()->getBundleOf());
+
+    // Create islandora_models vocabulary.
+    $this->modelsVocabulary = $this->createModelsVocabulary();
+    $this->createEntityReferenceField(
+      'node',
+      'page',
+      IslandoraUtils::MODEL_FIELD,
+      'Model',
+      'taxonomy_term',
+      'default',
+      ['target_bundles' => ['islandora_models']]
+    );
+
   }
 
   /**
@@ -60,8 +84,6 @@ trait IslandoraContentTypeTestTraits {
    *
    * @return \Drupal\node\NodeInterface
    *   A created (and saved) node entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createNode() : NodeInterface {
     if (empty($this->contentType)) {
@@ -80,8 +102,6 @@ trait IslandoraContentTypeTestTraits {
    *
    * @return \Drupal\file\FileInterface
    *   A created (and saved) file entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createFile() : FileInterface {
     /** @var \Drupal\file\FileInterface $entity */
@@ -97,7 +117,7 @@ trait IslandoraContentTypeTestTraits {
    * @return string
    *   File URI.
    */
-  protected function createUri() {
+  protected function createUri(): string {
     $filepath = 'test file ' . $this->randomMachineName();
     $scheme = 'public';
     $filepath = $scheme . '://' . $filepath;
@@ -147,6 +167,56 @@ trait IslandoraContentTypeTestTraits {
    */
   protected function getMediaFieldName() : string {
     return $this->mediaType->getSource()->getSourceFieldDefinition($this->mediaType)->getName();
+  }
+
+  /**
+   * Helper; Creates the islandora models vocabulary.
+   *
+   * @return \Drupal\taxonomy\VocabularyInterface
+   *   The created vocabulary.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected function createModelsVocabulary() : Vocabulary {
+    $vocabulary = $this->createVocabulary(['vid' => 'islandora_models']);
+
+    // Create link type field on vocabulary for external uri.
+    $field_name = IslandoraUtils::EXTERNAL_URI_FIELD;
+
+    // Create a field with settings to validate.
+    $storage_definition = [
+      'field_name' => $field_name,
+      'entity_type' => 'taxonomy_term',
+      'type' => 'link',
+      'cardinality' => 1,
+    ];
+
+    FieldStorageConfig::create($storage_definition)->save();
+
+    $field_definition = [
+      'field_name' => $field_name,
+      'entity_type' => 'taxonomy_term',
+      'bundle' => $vocabulary->id(),
+      'label' => $this->randomMachineName() . '_label',
+    ];
+
+    FieldConfig::create($field_definition)->save();
+
+    return $vocabulary;
+  }
+
+  /**
+   * Creates a non-islandora node.
+   *
+   * @return \Drupal\node\NodeInterface
+   *   A created (and saved) node entity.
+   */
+  public function createNonIslandoraNode(): NodeInterface {
+    /** @var \Drupal\node\NodeInterface $entity */
+    return $this->createEntity('node', [
+      'type' => $this->contentType->id(),
+      'title' => $this->randomString(),
+    ]);
   }
 
 }
