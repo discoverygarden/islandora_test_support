@@ -21,7 +21,7 @@ trait DatabaseQueryTestTraits {
    */
   protected function generateMediaSelectAccessQuery(
     $user,
-    $operation = NULL
+    $operation = NULL,
   ): SelectInterface {
     return $this->attachAccessControl($this->generateBaseMediaQuery(),
       'media_access', $user, $operation);
@@ -34,7 +34,7 @@ trait DatabaseQueryTestTraits {
     SelectInterface $query,
     string $tag,
     AccountInterface $user,
-    ?string $operation
+    ?string $operation,
   ): SelectInterface {
     $this->addAccessTag($query, $tag);
     $this->addUser($query, $user);
@@ -66,7 +66,7 @@ trait DatabaseQueryTestTraits {
    */
   protected function addOperation(
     SelectInterface $query,
-    ?string $operation = NULL
+    ?string $operation = NULL,
   ) {
     $operation ? $query->addMetaData('op',
       $operation) : $query->addMetaData('op', static::$viewOp);
@@ -84,7 +84,7 @@ trait DatabaseQueryTestTraits {
    */
   protected function generateFileSelectAccessQuery(
     AccountInterface $user,
-    ?string $operation = NULL
+    ?string $operation = NULL,
   ): SelectInterface {
     return $this->attachAccessControl($this->generateBaseFileQuery(),
       'file_access', $user, $operation);
@@ -102,7 +102,7 @@ trait DatabaseQueryTestTraits {
    */
   protected function generateNodeSelectAccessQuery(
     AccountInterface $user,
-    ?string $operation = NULL
+    ?string $operation = NULL,
   ): SelectInterface {
     return $this->attachAccessControl($this->generateBaseNodeQuery(),
       'node_access', $user, $operation);
