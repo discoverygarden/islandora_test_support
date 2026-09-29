@@ -5,7 +5,7 @@
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "require": {
-        "discoverygarden/test_support": "dev-main as 1.x-dev",
+        "discoverygarden/test_support": "^1",
         "drupal/islandora": "^2"
     }
 }
